@@ -23,7 +23,7 @@ public class MouseClickOnPlane : MonoBehaviour
     private Camera mainCamera;
     private GameObject selectedPlane; // The plane that was clicked
     private GameObject activeUI; // The currently active confirmation UI
-
+    ObstacleSpawner obstacle;
     private string saveFilePath;
     private string cashFilePath;
     public int currentCash;
@@ -153,7 +153,10 @@ public class MouseClickOnPlane : MonoBehaviour
         string CleanName = newPlane.name.Replace("(Clone)", "");
         string data = $"{newPlane.transform.position.x},0,{newPlane.transform.position.z},{CleanName}\n";
         File.AppendAllText(saveFilePath, data);
-        //Debug.Log("Saved plane data: " + data);
+        obstacle = null;
+        obstacle = newPlane.GetComponent<ObstacleSpawner>();
+        obstacle.SpawnObstacles();
+        obstacle = null;
     }
 
     private void SaveCash()

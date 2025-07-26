@@ -11,7 +11,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     [Tooltip("Number of obstacles to spawn when the land is purchased")]
     public int obstaclesToSpawn = 10;
-
+    Obstacle obstacleScript;
     private List<int> usedIndices = new List<int>();
 
     public void SpawnObstacles()
@@ -33,14 +33,7 @@ public class ObstacleSpawner : MonoBehaviour
 
             Transform spawnPoint = spawnPoints[index];
             GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
-            GameObject obstacle = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, transform);
-
-            // Call the OnPlaced() method if it exists
-            var placeable = obstacle.GetComponent<IPlaceableObstacle>();
-            if (placeable != null)
-            {
-                placeable.OnPlaced();
-            }
+            GameObject obstacle = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
         }
     }
 
@@ -59,10 +52,4 @@ public class ObstacleSpawner : MonoBehaviour
         usedIndices.Add(index);
         return index;
     }
-}
-
-// Optional interface for clarity and extensibility
-public interface IPlaceableObstacle
-{
-    void OnPlaced();
 }

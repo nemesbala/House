@@ -9,6 +9,7 @@ public class RaycastClickHandler : MonoBehaviour
     House houseScript;
     Road roadScript;
     CityHall cityHallScript;
+    Obstacle obstacleScript;
     public BuildingSystem buildingSystem;
 
     void Update()
@@ -38,6 +39,7 @@ public class RaycastClickHandler : MonoBehaviour
                 factoryScript = clickedObject.GetComponent<Factory>();
                 roadScript = clickedObject.GetComponent<Road>();
                 cityHallScript = clickedObject.GetComponent<CityHall>();
+                obstacleScript = clickedObject.GetComponent<Obstacle>();
 
 
                 if (houseScript != null)
@@ -58,6 +60,11 @@ public class RaycastClickHandler : MonoBehaviour
                 if (cityHallScript != null)
                 {
                     cityHallScript.OnClick();
+                }
+
+                if(obstacleScript != null)
+                {
+                    obstacleScript.OnClick();
                 }
             }
         }

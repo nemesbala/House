@@ -67,5 +67,12 @@ public class HouseLoader : MonoBehaviour
             RoadScript.houseID = houseID;
             RoadScript.LoadHouseData(data);
         }
+
+        Obstacle ObstacleScript = houseInstance.GetComponent<Obstacle>();
+        if (ObstacleScript != null)
+        {
+            ObstacleScript.houseID = houseID;
+            ObstacleScript.LoadHouseData(data);
+        }
     }
 }
