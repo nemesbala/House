@@ -10,8 +10,8 @@ public class WPandSP : MonoBehaviour
     string FilePath;
     public TextMeshProUGUI WText;
     public TextMeshProUGUI SText;
-    int Wpoints;
-    int Spoints;
+    public int Wpoints;
+    public int Spoints;
 
     // Start is called before the first frame update
     void Start()

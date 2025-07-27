@@ -28,10 +28,12 @@ public class MouseClickOnPlane : MonoBehaviour
     private string cashFilePath;
     public int currentCash;
     private int piecesBought = 0; // Tracks how many pieces have been purchased
+    public PublicBoolForPauseMenuOpen publicBoolForPauseMenuOpen;
 
     void Start()
     {
         mainCamera = Camera.main;
+        publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
         saveFilePath = Path.Combine(Application.persistentDataPath, "plane_data.txt");
         cashFilePath = Path.Combine(Application.persistentDataPath, "Cash.txt");
 
@@ -42,6 +44,12 @@ public class MouseClickOnPlane : MonoBehaviour
     void Update()
     {
         DetectMouseClick();
+
+        if (Input.GetKeyUp(KeyCode.Escape) && activeUI.activeSelf == true)
+        {
+            activeUI.SetActive(false);
+            publicBoolForPauseMenuOpen.isAnUIOpened = false;
+        }
     }
 
     private void DetectMouseClick()
@@ -84,6 +92,7 @@ public class MouseClickOnPlane : MonoBehaviour
                     if (activeUI != null) activeUI.SetActive(false); // Hide the previous UI
                     activeUI = planeUIHandler.confirmationUI;
                     activeUI.SetActive(true);
+                    publicBoolForPauseMenuOpen.isAnUIOpened = true;
 
                     // Update the cost display
                     if (costText != null)
@@ -99,6 +108,7 @@ public class MouseClickOnPlane : MonoBehaviour
     public void Return()
     {
         activeUI.SetActive(false);
+        publicBoolForPauseMenuOpen.isAnUIOpened = false;
     }
 
     private void ReplaceSelectedPlane()

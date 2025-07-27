@@ -36,6 +36,7 @@ public class Obstacle : MonoBehaviour
     public GameObject EmptyPlot;
     [Tooltip("Assign here the correct stages of construction. Saved as: stage = 1")]
     public GameObject Construction;
+    bool AboutToBeDeleted = false;
 
     [Header("Upgrade Buttons")]
     [Tooltip("Assign here the correct button, that enables construction from empty to Stage 1.")]
@@ -44,6 +45,7 @@ public class Obstacle : MonoBehaviour
     public GameObject Button1;
 
     [Header("Materials to give")]
+    public int WPtoClear;
     public int NeddedWood01;
     public int NeddedWoodenBeam01;
     public int NeddedBrick01;
@@ -134,7 +136,7 @@ public class Obstacle : MonoBehaviour
 
     void Update()
     {
-        if (Stage == 1)
+        if (Stage == 1 && !AboutToBeDeleted)
         {
             DateTime currentTime = DateTime.Now;
 
@@ -264,6 +266,22 @@ public class Obstacle : MonoBehaviour
 
     public void UpgradeFinish01()
     {
+        AboutToBeDeleted = true;
+        CashIcon.SetActive(false);
+        if (clip != null)
+        {
+            string SFXFilePath;
+            SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+            string[] datas = File.ReadAllLines(SFXFilePath);
+            float volume = float.Parse(datas[0]);
+            GameObject Cam = GameObject.Find("Main Camera");
+            AudioSource.PlayClipAtPoint(clip, Cam.transform.position, volume);
+        }
+
+        xpManager.AddXP(XPToGive1);
+        AFTUCtxt.text = "+ " + (XPToGive1) + " XP";
+        animatedFloatingTextUponCollection.SetActive(false);
+        animatedFloatingTextUponCollection.SetActive(true);
         UIClosing();
         objectToEnable.SetActive(false);
         EmptyPlot.SetActive(false);
@@ -316,25 +334,15 @@ public class Obstacle : MonoBehaviour
 
                 Button0.SetActive(false);
                 Button1.SetActive(false);
+
+                if(WPtoClear <= wpandsp.Wpoints && Stage == 0)
+                {
+                    Button0.SetActive(true);
+                }
             }
             else if (CashIcon.activeSelf)
             {
-                CashIcon.SetActive(false);
-                SaveFutureTime();
-                if (clip != null)
-                {
-                    string SFXFilePath;
-                    SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
-                    string[] datas = File.ReadAllLines(SFXFilePath);
-                    float volume = float.Parse(datas[0]);
-                    GameObject Cam = GameObject.Find("Main Camera");
-                    AudioSource.PlayClipAtPoint(clip, Cam.transform.position, volume);
-                }
-
-                xpManager.AddXP(XPToGive1);
-                AFTUCtxt.text = "+ " + (XPToGive1) + " XP";
-                animatedFloatingTextUponCollection.SetActive(false);
-                animatedFloatingTextUponCollection.SetActive(true);
+                UpgradeFinish01();
             }
         }
     }
