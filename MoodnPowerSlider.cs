@@ -13,7 +13,7 @@ public class MoodnPowerSlider : MonoBehaviour
     void Start()
     {
         string PowerMoodFilePath;
-        PowerMoodFilePath = Path.Combine(Application.persistentDataPath, "PowerMood.txt");
+        PowerMoodFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "PowerMood.txt");
         if (!File.Exists(PowerMoodFilePath))
         {
             using (StreamWriter writer = new StreamWriter(PowerMoodFilePath))

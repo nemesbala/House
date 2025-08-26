@@ -14,7 +14,7 @@ public class PowerManager : MonoBehaviour
 
     private void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "powerLevels.txt");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "powerLevels.txt");
         LoadPowerLevels();
     }
 

@@ -38,14 +38,9 @@ public class Obstacle : MonoBehaviour
     public GameObject Construction;
     bool AboutToBeDeleted = false;
 
-    [Header("Upgrade Buttons")]
-    [Tooltip("Assign here the correct button, that enables construction from empty to Stage 1.")]
-    public GameObject Button0;
-    [Tooltip("Assign here the correct button, that finishes construction from empty to Stage 1.")]
-    public GameObject Button1;
-
     [Header("Materials to give")]
     public int WPtoClear;
+    public int CashtoClear;
     public int NeddedWood01;
     public int NeddedWoodenBeam01;
     public int NeddedBrick01;
@@ -55,16 +50,24 @@ public class Obstacle : MonoBehaviour
     [Header("Other Stuff")]
     public DateTime futureTime;
     [Tooltip("This is the 3D icon above the building that shows up, when the construction is finished")]
-    public TextMeshProUGUI timerText;
+    //public TextMeshProUGUI timerText;
     public int HouseArrayID;
     public AudioClip clip;
     public AudioMixer audioMixer;
     private bool CanBeClickedOn = false;
     public TMP_Text AFTUCtxt;
+    public TMP_Text Cost;
+    public TMP_Text CashCost;
+    public TMP_Text Time;
     public GameObject animatedFloatingTextUponCollection;
+    public GameObject Before;
+    public GameObject After;
+    private CashDisplay cashDisplay;
+    private string filePath;
 
     void Start()
     {
+        cashDisplay = FindObjectOfType<CashDisplay>();
         publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
         // Generate a unique ID if it doesn't already exist
         if (string.IsNullOrEmpty(houseID))
@@ -92,16 +95,16 @@ public class Obstacle : MonoBehaviour
             Debug.LogError("IDText component is not assigned.");
         }
 
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         // Load house data from a file
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Building");
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-
+        string directoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
+        Construction.SetActive(false);
         if (File.Exists(filePath))
         {
             CanBeClickedOn = true;
@@ -140,7 +143,6 @@ public class Obstacle : MonoBehaviour
         {
             DateTime currentTime = DateTime.Now;
 
-            string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
             string[] lines = File.ReadAllLines(filePath);
             string lastSavedTimeString = lines[1];
             DateTime futureTimeC = DateTime.Parse(lastSavedTimeString);
@@ -148,7 +150,6 @@ public class Obstacle : MonoBehaviour
             if (currentTime >= futureTimeC)
             {
                 CashIcon.SetActive(true);
-                Button1.SetActive(true);
             }
         }
 
@@ -161,8 +162,6 @@ public class Obstacle : MonoBehaviour
 
     void LoadFutureTime()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-
         if (File.Exists(filePath))
         {
             string[] lines = File.ReadAllLines(filePath);
@@ -195,9 +194,6 @@ public class Obstacle : MonoBehaviour
         futureTime = currentTime.AddSeconds(TimeToGive);
         string futureTimeString = futureTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-        // Define the path to the file
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-
         // Read all lines from the file
         string[] lines = File.ReadAllLines(filePath);
         using (StreamWriter writer = new StreamWriter(filePath)) // 'true' enables appending
@@ -217,14 +213,11 @@ public class Obstacle : MonoBehaviour
             // Format the remaining time as HH:MM:SS
             string timeString = string.Format("{0:D2}:{1:D2}:{2:D2}",
             remainingTime.Hours, remainingTime.Minutes, remainingTime.Seconds);
-
-            // Update the TMPro text component
-            timerText.text = timeString;
+            Time.text = timeString;
         }
         else
         {
-            // If the time has elapsed, display 00:00:00
-            timerText.text = "00:00:00";
+            Time.text = "00:00:00";
         }
     }
 
@@ -233,16 +226,14 @@ public class Obstacle : MonoBehaviour
         Stage = 1;
         EmptyPlot.SetActive(false);
         Construction.SetActive(true);
-        Button0.SetActive(false);
         objectToEnable.SetActive(false);
         DateTime currentTime = DateTime.Now;
         DateTime futureTimeC = currentTime.AddSeconds(TimeToGive);
         futureTime = currentTime.AddSeconds(TimeToGive);
         string futureTimeString = futureTimeC.ToString("yyyy-MM-dd HH:mm:ss");
-        //Debug.Log(futureTimeC);
-        // Define the path to the file
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
         UIClosing();
+        wpandsp.SubtrackWPoints(WPtoClear);
+        cashDisplay.SubtractCash(CashtoClear);
         if (File.Exists(filePath))
         {
             // Read all lines from the file
@@ -256,7 +247,6 @@ public class Obstacle : MonoBehaviour
                 writer.WriteLine(futureTimeString);
                 //Debug.Log($"Construction time appended: {futureTimeString} to file: {filePath}");
             }
-
         }
         else
         {
@@ -271,7 +261,7 @@ public class Obstacle : MonoBehaviour
         if (clip != null)
         {
             string SFXFilePath;
-            SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+            SFXFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Audio.txt");
             string[] datas = File.ReadAllLines(SFXFilePath);
             float volume = float.Parse(datas[0]);
             GameObject Cam = GameObject.Find("Main Camera");
@@ -288,7 +278,7 @@ public class Obstacle : MonoBehaviour
         Construction.SetActive(false);
         CashIcon.SetActive(false);
 
-        string path = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string path = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
         if (File.Exists(path))
         {
             // Delete the folder and its contents
@@ -299,7 +289,7 @@ public class Obstacle : MonoBehaviour
             Debug.LogWarning("File does not exist: " + path);
         }
 
-        StartCoroutine(CallAfterDelay(5f));
+        StartCoroutine(CallAfterDelay(8f));
     }
 
     private IEnumerator CallAfterDelay(float delay)
@@ -329,15 +319,9 @@ public class Obstacle : MonoBehaviour
         {
             if (CashIcon.activeSelf == false)
             {
-                objectToEnable.SetActive(true);
-                publicBoolForPauseMenuOpen.isAnUIOpened = true;
-
-                Button0.SetActive(false);
-                Button1.SetActive(false);
-
-                if(WPtoClear <= wpandsp.Wpoints && Stage == 0)
+                if(WPtoClear <= wpandsp.Wpoints && Stage == 0 && CashtoClear <= cashDisplay.cashAmount)
                 {
-                    Button0.SetActive(true);
+                    Upgrade01();
                 }
             }
             else if (CashIcon.activeSelf)
@@ -345,6 +329,46 @@ public class Obstacle : MonoBehaviour
                 UpgradeFinish01();
             }
         }
+    }
+
+    public void OnMouseHover()
+    {
+        objectToEnable.SetActive(true);
+        Cost.text = WPtoClear.ToString();
+        CashCost.text = CashtoClear.ToString();
+
+        if(Stage == 0)
+        {
+            Before.SetActive(true);
+            After.SetActive(false);
+            if (WPtoClear <= wpandsp.Wpoints)
+            {
+                Cost.color = new Color32(0, 200, 0, 255);
+            }
+            else
+            {
+                Cost.color = new Color32(200, 0, 0, 255);
+            }
+
+            if (CashtoClear <= cashDisplay.cashAmount)
+            {
+                CashCost.color = new Color32(0, 200, 0, 255);
+            }
+            else
+            {
+                CashCost.color = new Color32(200, 0, 0, 255);
+            }
+        }
+        else
+        {
+            Before.SetActive(false);
+            After.SetActive(true);
+        }
+    }
+
+    public void NoMouseHover()
+    {
+        objectToEnable.SetActive(false);
     }
 
     public void DestroyBuilding()
@@ -357,7 +381,7 @@ public class Obstacle : MonoBehaviour
     // Save the house's data to a file
     public void SaveHouseData()
     {
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
         List<string> data = new List<string>();
         data.Add($"{houseIndex},{transform.position.x},{transform.position.y},{transform.position.z},{Stage}");
         try
@@ -371,7 +395,7 @@ public class Obstacle : MonoBehaviour
         catch (Exception ex)
         {
             Debug.Log(ex.Message);
-            Debug.Log("I am here at Line:366 in an Obstacle.cs");
+            Debug.Log("I am here at Line:398 in an Obstacle.cs");
         }
         File.WriteAllLines(saveFilePath, data);
     }

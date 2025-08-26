@@ -34,8 +34,8 @@ public class MouseClickOnPlane : MonoBehaviour
     {
         mainCamera = Camera.main;
         publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
-        saveFilePath = Path.Combine(Application.persistentDataPath, "plane_data.txt");
-        cashFilePath = Path.Combine(Application.persistentDataPath, "Cash.txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "plane_data.txt");
+        cashFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Cash.txt");
 
         LoadCash();
         UpdateCashDisplay();
@@ -122,7 +122,7 @@ public class MouseClickOnPlane : MonoBehaviour
             currentCash -= currentCost;
             SaveCash();
             UpdateCashDisplay();
-
+            publicBoolForPauseMenuOpen.isAnUIOpened = false;
             // Select a random replacement plane from the array
             GameObject replacementPlane = replacementPlanes[Random.Range(0, replacementPlanes.Length)];
 

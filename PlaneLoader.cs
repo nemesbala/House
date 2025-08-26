@@ -10,7 +10,7 @@ public class PlaneLoader : MonoBehaviour
 
     void Start()
     {
-        saveFilePath = Path.Combine(Application.persistentDataPath, "plane_data.txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "plane_data.txt");
 
         if (!File.Exists(saveFilePath))
         {

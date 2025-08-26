@@ -111,7 +111,7 @@ public class NewMarket : MonoBehaviour
 
     public void Start()
     {
-        fullPath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        fullPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
         cashDisplay = FindObjectOfType<CashDisplay>();
         EnsureFileExists();
         selectedIntegers = GetSelectedIntegers();

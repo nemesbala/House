@@ -19,8 +19,7 @@ public class LevelUpRewarder : MonoBehaviour
     public void ButtonPressed()
     {
         cashdisplay.AddCash(CashToGive);
-
-        string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        string inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
         string[] lines = File.ReadAllLines(inventoryFilePath);
         int[] data = lines.Select(int.Parse).ToArray();
         data[IDForInventory] = NumberOfInventory + data[IDForInventory];
@@ -33,7 +32,7 @@ public class LevelUpRewarder : MonoBehaviour
             }
         }
 
-        inventoryFilePath = Path.Combine(Application.persistentDataPath, "Blueprints.txt");
+        inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Blueprints.txt");
         string[] line = File.ReadAllLines(inventoryFilePath);
         string A = line[0];
         string[] B = A.Split(',');

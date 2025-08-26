@@ -10,7 +10,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        settingsFilePath = Path.Combine(Application.persistentDataPath, "settings.txt");
+        settingsFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "settings.txt");
         InitializeDropdowns();
         LoadSettings();
     }

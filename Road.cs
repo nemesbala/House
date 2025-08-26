@@ -31,6 +31,8 @@ public class Road : MonoBehaviour
     public PublicBoolForPauseMenuOpen publicBoolForPauseMenuOpen;
     [Tooltip("This is the UI, that is going to be enabled. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
     public GameObject objectToEnable;
+    [Tooltip("This is the UI, that is going to be enabled, when the mouse hover over the building. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
+    public GameObject objectToHoverEnable;
 
     [Header("Other Stuff")]
     private CashDisplay cashDisplay;
@@ -93,15 +95,15 @@ public class Road : MonoBehaviour
             Debug.LogError("IDText component is not assigned.");
         }
 
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         // Load house data from a file
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Building");
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string directoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building");
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         if (File.Exists(filePath))
         {
@@ -117,7 +119,7 @@ public class Road : MonoBehaviour
         }
 
         //The following section replaces the call to LoadFutureTime()
-        string filePathq = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        //string filePathq = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
 
         //----------Find and Assign Mood and Power Sliders------------
         Mood = FindObjectOfType<MoodManager>();
@@ -156,6 +158,16 @@ public class Road : MonoBehaviour
         MainRoadChecker.Instance.CollectBuildings();
         MainRoadChecker.Instance.RecheckAllBuildings();
         StartCoroutine(ResetPlacing());
+    }
+
+    public void OnMouseHover()
+    {
+        objectToHoverEnable.SetActive(true);
+    }
+
+    public void NoMouseHover()
+    {
+        objectToHoverEnable.SetActive(false);
     }
 
     private IEnumerator ResetPlacing()
@@ -213,7 +225,7 @@ public class Road : MonoBehaviour
 
     public void DestroyBuilding()
     {
-        string path = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string path = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
         if (File.Exists(path))
         {
             // Delete the folder and its contents

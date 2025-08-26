@@ -12,8 +12,8 @@ public class LevelBlocker : MonoBehaviour
 
     public void OnEnable()
     {
-        FilePath = Path.Combine(Application.persistentDataPath, "XPData.txt");
-        
+        FilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "XPData.txt");
+
         string[] lines = File.ReadAllLines(FilePath);
         if (lines.Length >= 2)
         {

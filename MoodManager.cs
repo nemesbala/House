@@ -14,7 +14,7 @@ public class MoodManager : MonoBehaviour
 
     private void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "moodLevels.txt");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "moodLevels.txt");
         LoadMoodLevels();
     }
 

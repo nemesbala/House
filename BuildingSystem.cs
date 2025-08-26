@@ -154,7 +154,7 @@ public class BuildingSystem : MonoBehaviour
                     if (PlacementClip != null)
                     {
                         string SFXFilePath;
-                        SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+                        SFXFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Audio.txt");
                         string[] datas = File.ReadAllLines(SFXFilePath);
                         float volume = float.Parse(datas[0]);
                         GameObject Cam = GameObject.Find("Main Camera");
@@ -173,7 +173,7 @@ public class BuildingSystem : MonoBehaviour
                     if (InvalidPlaceClip != null)
                     {
                         string SFXFilePath;
-                        SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+                        SFXFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Audio.txt");
                         string[] datas = File.ReadAllLines(SFXFilePath);
                         float volume = float.Parse(datas[0]);
                         GameObject Cam = GameObject.Find("Main Camera");

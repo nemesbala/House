@@ -23,7 +23,7 @@ public class WPSPConverter : MonoBehaviour
 
     void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "WSPoints.txt");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "WSPoints.txt");
         UpdatePoints();
         UpdateWtoSPreview();
         UpdateStoWPreview();

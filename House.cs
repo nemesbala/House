@@ -39,6 +39,8 @@ public class House : MonoBehaviour
     [Header("Building Stages")]
     [Tooltip("This is the UI, that is going to be enabled. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
     public GameObject objectToEnable;
+    [Tooltip("This is the UI, that is going to be enabled, when the mouse hover over the building. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
+    public GameObject objectToHoverEnable;
     [Tooltip("Assign here the correct stages of construction. Saved as: stage = 0")]
     public GameObject EmptyPlot;
     [Tooltip("Assign here the correct stages of construction. Saved as: stage = 1")]
@@ -130,6 +132,12 @@ public class House : MonoBehaviour
     public TextMeshProUGUI timerText;
     private CashDisplay cashDisplay;
     public int ConstructionPlacementCost;
+    public TextMeshProUGUI InfoMoodText;
+    public TextMeshProUGUI InfoPowerText;
+    public TextMeshProUGUI InfoTimerText;
+    public TextMeshProUGUI InfoRentText;
+    public TextMeshProUGUI InfoWPText;
+    public TextMeshProUGUI InfoSPText;
 
     [Header("Mood & Power")]
     [Tooltip("Check this box if this building GIVES power. Leave it unchecked if it TAKES power!")]
@@ -179,6 +187,8 @@ public class House : MonoBehaviour
     public Vector3 rightSize = new Vector3(0.5f, 1f, 1f);
     private bool[] sideResults = new bool[4];
     public GameObject NoRoadIcon;
+    private string filePath;
+    private string inventoryFilePath;
 
     void Start()
     {
@@ -213,15 +223,16 @@ public class House : MonoBehaviour
             Debug.LogError("IDText component is not assigned.");
         }
 
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
+        inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
 
         // Load house data from a file
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Building");
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string directoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         if (File.Exists(filePath))
         {
@@ -237,32 +248,23 @@ public class House : MonoBehaviour
             Stage = int.Parse(parts[4]);
             ResidentType = int.Parse(parts[5]);
             dropdown.SetValueWithoutNotify(ResidentType);
-            //dropdown.value = ResidentType;
             dropdown.RefreshShownValue();
-            //Debug.Log($"Successful loading: Building ID: {houseID}, Building Index: {houseIndex}, Current Stage: {Stage}, Current Location: {position}");
-        }
-        else
-        {
-            //Debug.LogError($"File not found: {filePath}");
         }
 
-        switch(Stage)
+        switch (Stage)
         {
             case 1:
                 {
                     Stage = 1;
                     EmptyPlot.SetActive(false);
                     Construction.SetActive(true);
-                    //SaveHouseData();
                     break;
                 }
             case 2:
                 {
                     Stage = 2;
                     EmptyPlot.SetActive(false);
-                    Construction.SetActive(false);
                     Stage1.SetActive(true);
-                    //SaveHouseData();
                     break;
                 }
             case 3:
@@ -295,11 +297,10 @@ public class House : MonoBehaviour
                 }
         }
         //The following section replaces the call to LoadFutureTime()
-        string filePathq = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
 
-        if (File.Exists(filePathq))
+        if (File.Exists(filePath))
         {
-            string[] lines = File.ReadAllLines(filePathq);
+            string[] lines = File.ReadAllLines(filePath);
             //Debug.Log(lines.Length);
             if (lines.Length > 1)
             {
@@ -318,6 +319,195 @@ public class House : MonoBehaviour
         GameObject GblueprintChecker = GameObject.Find("Canvas (Has Sound Attached!)");
         blueprintChecker = GblueprintChecker.GetComponent<BlueprintChecker>();
         CheckRoadConnection();
+    }
+
+    public void OnMouseHover()
+    {
+        objectToHoverEnable.SetActive(true);
+
+        switch (Stage)
+        {
+            case 0:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive01;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake01;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive01;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake01;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 1:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive01;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake01;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive01;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake01;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive01;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake01;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive01;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake01;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 3:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive2;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake2;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive2;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake2;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 4:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive2;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake2;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive2;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake2;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 5:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive3;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake3;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive3;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake3;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+            case 6:
+                {
+                    if (PowerGiver)
+                    {
+                        InfoPowerText.text = "+ " + PowerToGive3;
+                        InfoPowerText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!PowerGiver)
+                    {
+                        InfoPowerText.text = "- " + PowerToTake3;
+                        InfoPowerText.color = new Color32(200, 0, 0, 255);
+                    }
+
+                    if (MoodGiver)
+                    {
+                        InfoMoodText.text = "+ " + MoodToGive3;
+                        InfoMoodText.color = new Color32(0, 200, 0, 255);
+                    }
+                    else if (!MoodGiver)
+                    {
+                        InfoMoodText.text = "- " + MoodToTake3;
+                        InfoMoodText.color = new Color32(200, 0, 0, 255);
+                    }
+                    break;
+                }
+        }
+    }
+
+    public void NoMouseHover()
+    {
+        objectToHoverEnable.SetActive(false);
     }
 
     public void ResidentTypeSet()
@@ -349,7 +539,6 @@ public class House : MonoBehaviour
     {
         //Dear future me. Do not merge this into the end of ResidentTypeSet(). Since Start() changes the resident type via the UI, that makes the dropdown call that function, which results in subracting one CTC every time the game starts.
         //Scratch that. There is a SetValueWithoutNotify function for the dropdown, but I am leaving these comments here for fun.
-        string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
         string[] datas = File.ReadAllLines(inventoryFilePath);
         int CitizenTypeChange = int.Parse(datas[34]);
         datas[34] = (CitizenTypeChange - 1).ToString();
@@ -376,7 +565,6 @@ public class House : MonoBehaviour
             {
                 DateTime currentTime = DateTime.Now;
 
-                string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
                 string[] lines = File.ReadAllLines(filePath);
                 string lastSavedTimeString = lines[1];
                 DateTime futureTimeC = DateTime.Parse(lastSavedTimeString);
@@ -391,7 +579,6 @@ public class House : MonoBehaviour
             {
                 DateTime currentTime = DateTime.Now;
 
-                string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
                 string[] lines = File.ReadAllLines(filePath);
                 string lastSavedTimeString = lines[1];
                 DateTime futureTimeC = DateTime.Parse(lastSavedTimeString);
@@ -406,7 +593,6 @@ public class House : MonoBehaviour
             {
                 DateTime currentTime = DateTime.Now;
 
-                string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
                 string[] lines = File.ReadAllLines(filePath);
                 string lastSavedTimeString = lines[1];
                 DateTime futureTimeC = DateTime.Parse(lastSavedTimeString);
@@ -486,8 +672,6 @@ public class House : MonoBehaviour
 
     void LoadFutureTime()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-
         if (File.Exists(filePath))
         {
             string[] lines = File.ReadAllLines(filePath);
@@ -522,9 +706,6 @@ public class House : MonoBehaviour
             futureTime = currentTime.AddSeconds(TimeToGive);
             string futureTimeString = futureTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-            // Define the path to the file
-            string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-
             // Read all lines from the file
             string[] lines = File.ReadAllLines(filePath);
             using (StreamWriter writer = new StreamWriter(filePath)) // 'true' enables appending
@@ -552,11 +733,13 @@ public class House : MonoBehaviour
 
             // Update the TMPro text component
             timerText.text = timeString;
+            InfoTimerText.text = timeString;
         }
         else
         {
             // If the time has elapsed, display 00:00:00
             timerText.text = "00:00:00";
+            InfoTimerText.text = "00:00:00";
         }
     }
 
@@ -572,8 +755,7 @@ public class House : MonoBehaviour
         futureTime = currentTime.AddSeconds(TimeToConstruct01);
         string futureTimeString = futureTimeC.ToString("yyyy-MM-dd HH:mm:ss");
         //Debug.Log(futureTimeC);
-        // Define the path to the file
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+
         UIClosing();
         if (File.Exists(filePath))
         {
@@ -590,7 +772,6 @@ public class House : MonoBehaviour
             }
 
             //--Subtract the materials--
-            string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
             string[] datas = File.ReadAllLines(inventoryFilePath);
 
             int Wood = int.Parse(datas[0]);
@@ -692,7 +873,6 @@ public class House : MonoBehaviour
             Mood.DecreaseNegative(MoodToTake01);
             Mood.IncreaseNegative(MoodToTake2);
         }
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
 
         if (File.Exists(filePath))
         {
@@ -709,7 +889,6 @@ public class House : MonoBehaviour
             }
 
             //--Subtract the materials--
-            string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
             string[] datas = File.ReadAllLines(inventoryFilePath);
 
             int Wood = int.Parse(datas[0]);
@@ -789,7 +968,7 @@ public class House : MonoBehaviour
         DateTime futureTimeC = currentTime.AddSeconds(TimeToConstruct23);
         futureTime = currentTime.AddSeconds(TimeToConstruct23);
         string futureTimeString = futureTimeC.ToString("yyyy-MM-dd HH:mm:ss");
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+
         if (PowerGiver)
         {
             Power.DecreasePositive(PowerToGive2);
@@ -826,7 +1005,6 @@ public class House : MonoBehaviour
             }
 
             //--Subtract the materials--
-            string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
             string[] datas = File.ReadAllLines(inventoryFilePath);
 
             int Wood = int.Parse(datas[0]);
@@ -930,7 +1108,7 @@ public class House : MonoBehaviour
 
     public bool CheckTech(int nodeToCheck)
     { 
-        string filePath = Path.Combine(Application.persistentDataPath, "TechTree.txt");
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "TechTree.txt");
         if (File.Exists(filePath))
         {
             string[] lines = File.ReadAllLines(filePath);
@@ -979,20 +1157,20 @@ public class House : MonoBehaviour
                         {
                             if(PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive01 + " Power";
+                                PEffects.text = "+ " + PowerToGive01;
                             }
                             else if(!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake01 + " Power";
+                                PEffects.text = "- " + PowerToTake01;
                             }
 
                             if(MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive01 + " Mood";
+                                MEffects.text = "+ " + MoodToGive01;
                             }
                             else if(!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake01 + " Mood";
+                                MEffects.text = "- " + MoodToTake01;
                             }
                             CashXP.text = "Currently pays no rent!";
                             WSPoints.text = "Currently gives no Worker or Science Point!";
@@ -1002,20 +1180,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive01 + " Power";
+                                PEffects.text = "+ " + PowerToGive01;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake01 + " Power";
+                                PEffects.text = "- " + PowerToTake01;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive01 + " Mood";
+                                MEffects.text = "+ " + MoodToGive01;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake01 + " Mood";
+                                MEffects.text = "- " + MoodToTake01;
                             }
                             CashXP.text = "Under construction, pays no rent!";
                             WSPoints.text = "Under construction, gives no Worker or Science Point!";
@@ -1025,20 +1203,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive01 + " Power";
+                                PEffects.text = "+ " + PowerToGive01;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake01 + " Power";
+                                PEffects.text = "- " + PowerToTake01;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive01 + " Mood";
+                                MEffects.text = "+ " + MoodToGive01;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake01 + " Mood";
+                                MEffects.text = "- " + MoodToTake01;
                             }
                             CashXP.text = "Base rent: " + CashToGive1 + " $ and " + XPToGive1 + " XP";
                             switch(ResidentType)
@@ -1065,20 +1243,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive2 + " Power";
+                                PEffects.text = "+ " + PowerToGive2;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake2 + " Power";
+                                PEffects.text = "- " + PowerToTake2;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive2 + " Mood";
+                                MEffects.text = "+ " + MoodToGive2;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake2 + " Mood";
+                                MEffects.text = "- " + MoodToTake2;
                             }
                             CashXP.text = "Under construction, pays no rent!";
                             WSPoints.text = "Under construction, gives no Worker or Science Point!";
@@ -1088,20 +1266,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive2 + " Power";
+                                PEffects.text = "+ " + PowerToGive2;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake2 + " Power";
+                                PEffects.text = "- " + PowerToTake2;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive2 + " Mood";
+                                MEffects.text = "+ " + MoodToGive2;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake2 + " Mood";
+                                MEffects.text = "- " + MoodToTake2;
                             }
                             CashXP.text = "Base rent: " + CashToGive2 + " $ and " + XPToGive2 + " XP";
                             switch (ResidentType)
@@ -1128,20 +1306,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive3 + " Power";
+                                PEffects.text = "+ " + PowerToGive3;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake3 + " Power";
+                                PEffects.text = "- " + PowerToTake3;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive3 + " Mood";
+                                MEffects.text = "+ " + MoodToGive3;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake3 + " Mood";
+                                MEffects.text = "- " + MoodToTake3;
                             }
                             CashXP.text = "Under construction, pays no rent!";
                             WSPoints.text = "Under construction, gives no Worker or Science Point!";
@@ -1151,20 +1329,20 @@ public class House : MonoBehaviour
                         {
                             if (PowerGiver)
                             {
-                                PEffects.text = "+ " + PowerToGive3 + " Power";
+                                PEffects.text = "+ " + PowerToGive3;
                             }
                             else if (!PowerGiver)
                             {
-                                PEffects.text = "- " + PowerToTake3 + " Power";
+                                PEffects.text = "- " + PowerToTake3;
                             }
 
                             if (MoodGiver)
                             {
-                                MEffects.text = "+ " + MoodToGive3 + " Mood";
+                                MEffects.text = "+ " + MoodToGive3;
                             }
                             else if (!MoodGiver)
                             {
-                                MEffects.text = "- " + MoodToTake3 + " Mood";
+                                MEffects.text = "- " + MoodToTake3;
                             }
                             CashXP.text = "Base rent: " + CashToGive3 + " $ and " + XPToGive3 + " XP";
                             switch (ResidentType)
@@ -1194,7 +1372,6 @@ public class House : MonoBehaviour
                 //and based on that enable/disable the buttons.
                 //--------------------------------------------------------------------------------------------------
 
-                string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
                 //OG: string data = File.ReadAllText(inventoryFilePath);
                 string[] datas = File.ReadAllLines(inventoryFilePath);
                 // Parsing the data from the file
@@ -1401,18 +1578,18 @@ public class House : MonoBehaviour
                 if (clip != null)
                 {
                     string SFXFilePath;
-                    SFXFilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+                    SFXFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Audio.txt");
                     string[] datas = File.ReadAllLines(SFXFilePath);
                     float volume = float.Parse(datas[0]);
                     GameObject Cam = GameObject.Find("Main Camera");
                     AudioSource.PlayClipAtPoint(clip, Cam.transform.position, volume);
                 }
                 string PowerFilePath;
-                PowerFilePath = Path.Combine(Application.persistentDataPath, "powerLevels.txt");
+                PowerFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "powerLevels.txt");
                 float CurrentPower = ReadOverallFloat(PowerFilePath);
 
                 string MoodFilePath;
-                MoodFilePath = Path.Combine(Application.persistentDataPath, "moodLevels.txt");
+                MoodFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "moodLevels.txt");
                 float CurrentMood = ReadOverallFloat(MoodFilePath);
 
                 if (cashDisplay != null)
@@ -1539,7 +1716,7 @@ public class House : MonoBehaviour
 
     public void DestroyBuilding()
     {
-        string path = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string path = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
         if (File.Exists(path))
         {
             // Delete the folder and its contents

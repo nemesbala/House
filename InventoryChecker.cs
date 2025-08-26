@@ -15,7 +15,7 @@ public class InventoryChecker : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        string inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
         string[] datas = File.ReadAllLines(inventoryFilePath);
         string data = datas[0];
         string[] parts = data.Split(',');

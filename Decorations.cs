@@ -35,15 +35,15 @@ public class Decorations : MonoBehaviour
             houseID = System.Guid.NewGuid().ToString();
         }
 
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         // Load house data from a file
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Building");
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string directoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building");
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
 
         if (File.Exists(filePath))
         {

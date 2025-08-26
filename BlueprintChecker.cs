@@ -12,7 +12,7 @@ public class BlueprintChecker : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        BlueprintFilePath = Path.Combine(Application.persistentDataPath, "Blueprints.txt");
+        BlueprintFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Blueprints.txt");
         if (!File.Exists(BlueprintFilePath))
         {
             int[] zeros = new int[150];

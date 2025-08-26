@@ -10,7 +10,7 @@ public class SimplifiedInventory : MonoBehaviour
     void Start()
     {
         // Define the path to save the file
-        inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
 
         // Check if the file exists, otherwise initialize with 0s
         if (!File.Exists(inventoryFilePath))

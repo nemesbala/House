@@ -18,11 +18,14 @@ public class Market : MonoBehaviour
     public bool Sell = false;
     public bool Buy = false;
 
+    private string inventoryFilePath;
+
     // Start is called before the first frame update
     public void Start()
     {
         cashDisplay = FindObjectOfType<CashDisplay>();
         simplifiedInventory = FindObjectOfType<SimplifiedInventory>();
+        inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
     }
 
     public void Trade()
@@ -30,7 +33,6 @@ public class Market : MonoBehaviour
         cashDisplay.SubtractCash(price);
 
         //--Change the materials--
-        string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
         string[] datas = File.ReadAllLines(inventoryFilePath);
         string data = datas[0];
         string[] parts = data.Split(',');

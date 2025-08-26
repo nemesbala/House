@@ -14,7 +14,7 @@ public class LocalizationManager : MonoBehaviour
 
     void Start()
     {
-        filePath = Path.Combine(Application.persistentDataPath, "CityData.txt");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "CityData.txt");
         StartCoroutine(InitializeDropdown());
     }
 

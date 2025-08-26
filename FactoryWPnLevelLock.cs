@@ -18,7 +18,7 @@ public class FactoryWPnLevelLock : MonoBehaviour
     public void Start()
     {
         string houseid = factory.houseID;
-        string filePathq = Path.Combine(Application.persistentDataPath, "Building", houseid + ".txt");
+        string filePathq = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseid + ".txt");
         if (File.Exists(filePathq))
         {
             string[] liness = File.ReadAllLines(filePathq);
@@ -34,8 +34,8 @@ public class FactoryWPnLevelLock : MonoBehaviour
             }
         }
 
-        string WPFilePath = Path.Combine(Application.persistentDataPath, "WSPoints.txt");
-        string LevelfilePath = Path.Combine(Application.persistentDataPath, "XPData.txt");
+        string WPFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "WSPoints.txt");
+        string LevelfilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "XPData.txt");
 
         string[] lines = File.ReadAllLines(LevelfilePath);
         if (lines.Length >= 2)

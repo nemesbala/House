@@ -30,6 +30,8 @@ public class CityHall : MonoBehaviour
     [Header("Building Stages")]
     [Tooltip("This is the UI, that is going to be enabled. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
     public GameObject objectToEnable;
+    [Tooltip("This is the UI, that is going to be enabled, when the mouse hover over the building. (Assign the IMAGE!(Child of the Canvas) NOT THE CANVAS!)")]
+    public GameObject objectToHoverEnable;
     [Tooltip("Assign here the correct stages of construction. Saved as: stage = 0")]
     public GameObject EmptyPlot;
     [Tooltip("Assign here the correct stages of construction. Saved as: stage = 1")]
@@ -194,12 +196,12 @@ public class CityHall : MonoBehaviour
             Debug.LogError("IDText component is not assigned.");
         }
 
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
-        saveFilePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-        inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        saveFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
+        inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
         // Load house data from a file
 
         if (File.Exists(saveFilePath))
@@ -303,6 +305,16 @@ public class CityHall : MonoBehaviour
         GameObject GblueprintChecker = GameObject.Find("Canvas (Has Sound Attached!)");
         blueprintChecker = GblueprintChecker.GetComponent<BlueprintChecker>();
         CheckRoadConnection();
+    }
+
+    public void OnMouseHover()
+    {
+        objectToHoverEnable.SetActive(true);
+    }
+
+    public void NoMouseHover()
+    {
+        objectToHoverEnable.SetActive(false);
     }
 
     void Update()
@@ -911,7 +923,7 @@ public class CityHall : MonoBehaviour
 
     public bool CheckTech(int nodeToCheck)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "TechTree.txt");
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "TechTree.txt");
         if (File.Exists(filePath))
         {
             string[] lines = File.ReadAllLines(filePath);

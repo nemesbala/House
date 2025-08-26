@@ -8,7 +8,7 @@ public class InventoryStarter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string inventoryFilePath = Path.Combine(Application.persistentDataPath, "inventory.txt");
+        string inventoryFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "inventory.txt");
         int[] data = new int[37];
         // Check if the file exists, otherwise initialize with 0s
         if (!File.Exists(inventoryFilePath))

@@ -27,9 +27,9 @@ public class TechUnlockCostChecker : MonoBehaviour
 
     public void Awake()
     {
-        inventoryPath = Path.Combine(Application.persistentDataPath, inventoryFile);
-        wsPointsPath = Path.Combine(Application.persistentDataPath, wsPointsFile);
-        cashPath = Path.Combine(Application.persistentDataPath, cashFile);
+        inventoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), inventoryFile);
+        wsPointsPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), wsPointsFile);
+        cashPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), cashFile);
         cashDisplay = FindObjectOfType<CashDisplay>();
         Mood = FindObjectOfType<MoodManager>();
         Power = FindObjectOfType<PowerManager>();

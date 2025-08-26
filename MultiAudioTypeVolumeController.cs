@@ -15,10 +15,11 @@ public class MultiAudioTypeVolumeController : MonoBehaviour
     [SerializeField] private List<AudioSource> sfxSources;      // List of SFX audio sources
     [SerializeField] private List<AudioSource> musicSources;    // List of Music audio sources
     [SerializeField] private List<AudioSource> ambianceSources; // List of Ambiance audio sources
+    private string FilePath;
 
     void Start()
     {
-        string FilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
+        FilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Audio.txt");
 
         if (File.Exists(FilePath))
         {
@@ -55,7 +56,6 @@ public class MultiAudioTypeVolumeController : MonoBehaviour
     // Set volume for all SFX audio sources
     private void SetSFXVolume(float volume)
     {
-        string FilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
         string[] datas = File.ReadAllLines(FilePath);
 
         foreach (var audioSource in sfxSources)
@@ -77,7 +77,6 @@ public class MultiAudioTypeVolumeController : MonoBehaviour
     // Set volume for all Music audio sources
     private void SetMusicVolume(float volume)
     {
-        string FilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
         string[] datas = File.ReadAllLines(FilePath);
 
         foreach (var audioSource in musicSources)
@@ -99,7 +98,6 @@ public class MultiAudioTypeVolumeController : MonoBehaviour
     // Set volume for all Ambiance audio sources
     private void SetAmbianceVolume(float volume)
     {
-        string FilePath = Path.Combine(Application.persistentDataPath, "Audio.txt");
         string[] datas = File.ReadAllLines(FilePath);
 
         foreach (var audioSource in ambianceSources)

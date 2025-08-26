@@ -11,7 +11,8 @@ public class CashDisplay : MonoBehaviour
     public void Start()
     {
         // Define the file path
-        cashFilePath = Path.Combine(Application.persistentDataPath, "Cash.txt");
+        // cashFilePath = Path.Combine(Application.persistentDataPath, "Cash.txt");
+        cashFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"),"Cash.txt");
 
         // Check if the Cash.txt file exists
         if (File.Exists(cashFilePath))
@@ -47,8 +48,13 @@ public class CashDisplay : MonoBehaviour
     {
         if (cashText != null)
         {
-            cashText.text = $"{cashAmount}$";
+            cashText.text = $"{cashAmount}";
         }
+    }
+
+    public int GetCash()
+    {
+        return cashAmount;
     }
 
     // Method to save the current cash amount to the Cash.txt file
@@ -65,7 +71,6 @@ public class CashDisplay : MonoBehaviour
         cashAmount += amount;
         SaveCashToFile();
         UpdateCashDisplay();
-        Debug.Log("Called");
     }
 
     // Example method to subtract cash (this can be called from other scripts)

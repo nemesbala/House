@@ -7,10 +7,9 @@ public class HouseLoader : MonoBehaviour
 
     void Start()
     {
-        if (!Directory.Exists(Path.Combine(Application.persistentDataPath, "Building")))
+        if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Building"));
-            //Debug.Log("Created subfolder for building data at: " + Path.Combine(Application.persistentDataPath, "Building"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building"));
         }
 
         LoadAllHouses();
@@ -19,7 +18,7 @@ public class HouseLoader : MonoBehaviour
     // Load all houses from the save directory
     void LoadAllHouses()
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Building");
+        string directoryPath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building");
         string[] files = Directory.GetFiles(directoryPath, "*.txt");
 
         foreach (string file in files)

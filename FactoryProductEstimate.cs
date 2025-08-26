@@ -12,12 +12,10 @@ public class FactoryProductEstimate : MonoBehaviour
     // Start is called before the first frame update
     public void OnEnable()
     {
-        string PowerFilePath;
-        PowerFilePath = Path.Combine(Application.persistentDataPath, "powerLevels.txt");
+        string PowerFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "powerLevels.txt");
         float CurrentPower = ReadOverallFloat(PowerFilePath);
 
-        string MoodFilePath;
-        MoodFilePath = Path.Combine(Application.persistentDataPath, "moodLevels.txt");
+        string MoodFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "moodLevels.txt");
         float CurrentMood = ReadOverallFloat(MoodFilePath);
 
         Estimate.text = (CurrentMood * CurrentPower * 100f).ToString("F2") + " %";

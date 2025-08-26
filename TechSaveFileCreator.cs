@@ -9,7 +9,7 @@ public class TechSaveFileCreator : MonoBehaviour
 
     void Awake()
     {
-        filePath = Path.Combine(Application.persistentDataPath, fileName);
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), fileName);
         CreateFileIfNeeded();
     }
 

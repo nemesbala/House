@@ -35,7 +35,7 @@ public class CashChecker : MonoBehaviour
             blueprintCount = 1;
         }
 
-        cashFilePath = Path.Combine(Application.persistentDataPath, "Cash.txt");
+        cashFilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Cash.txt");
         int Cash = Int32.Parse(File.ReadAllText(cashFilePath));
 
         if(Cash < AmmountToCheck || blueprintCount <= 0)

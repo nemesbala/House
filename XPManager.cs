@@ -22,7 +22,7 @@ public class XPManager : MonoBehaviour
     void Start()
     {
         // Define the file path for saving XP data
-        filePath = Path.Combine(Application.persistentDataPath, "XPData.txt");
+        filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "XPData.txt");
         publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
         // Check if the file exists; if not, create it with initial values
         if (!File.Exists(filePath))

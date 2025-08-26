@@ -24,8 +24,8 @@ public class DigitalDisplay : MonoBehaviour
     public void Start()
     {
         string houseID = houseScript.houseID.ToString();
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
-        if(File.Exists(filePath))
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
+        if (File.Exists(filePath))
         {
             string[] datas = File.ReadAllLines(filePath);
             //Debug.Log(lines.Length);
@@ -62,7 +62,7 @@ public class DigitalDisplay : MonoBehaviour
 
         // Read all lines from the file
         string houseID = houseScript.houseID.ToString();
-        string filePath = Path.Combine(Application.persistentDataPath, "Building", houseID + ".txt");
+        string filePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building", houseID + ".txt");
         string[] lines = File.ReadAllLines(filePath);
 
         using (StreamWriter writer = new StreamWriter(filePath)) // 'true' enables appending

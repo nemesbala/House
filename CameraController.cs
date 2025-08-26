@@ -11,6 +11,10 @@ public class CameraController : MonoBehaviour
     public PublicBoolForPauseMenuOpen publicBoolForPauseMenuOpen;
     private float currentYPosition;
 
+    private float smoothHorizontal = 0f;
+    private float smoothVertical = 0f;
+    public float inputSmoothSpeed = 10f; // How quickly it ramps up/down
+
     void Start()
     {
         // Initialize the camera's Y position
@@ -22,9 +26,18 @@ public class CameraController : MonoBehaviour
     {
         if(!publicBoolForPauseMenuOpen.Check())
         {
-            // Handle camera movement (WASD/Arrow keys) relative to the camera's orientation
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
+            // Raw input flags based on keyboard only
+            float rawHorizontal = 0f;
+            float rawVertical = 0f;
+
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) rawVertical += 1f;
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) rawVertical -= 1f;
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) rawHorizontal += 1f;
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) rawHorizontal -= 1f;
+
+            // Smoothly interpolate input over time
+            smoothHorizontal = Mathf.MoveTowards(smoothHorizontal, rawHorizontal, inputSmoothSpeed * Time.deltaTime);
+            smoothVertical = Mathf.MoveTowards(smoothVertical, rawVertical, inputSmoothSpeed * Time.deltaTime);
 
             // Get the forward and right directions relative to the camera's current rotation
             Vector3 forward = transform.forward;
@@ -42,22 +55,22 @@ public class CameraController : MonoBehaviour
             // Apply the movement to the camera's position
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-                Vector3 movement = (forward * verticalInput + right * horizontalInput) * moveSpeed * 1.5f * Time.deltaTime;
+                Vector3 movement = (forward * smoothVertical + right * smoothHorizontal) * moveSpeed * 1.5f * Time.deltaTime;
                 transform.position += movement;
             }
             else if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
             {
-                Vector3 movement = (forward * verticalInput + right * horizontalInput) * moveSpeed * 2f * Time.deltaTime;
+                Vector3 movement = (forward * smoothVertical + right * smoothHorizontal) * moveSpeed * 2f * Time.deltaTime;
                 transform.position += movement;
             }
             else if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
             {
-                Vector3 movement = (forward * verticalInput + right * horizontalInput) * moveSpeed * 4f * Time.deltaTime;
+                Vector3 movement = (forward * smoothVertical + right * smoothHorizontal) * moveSpeed * 4f * Time.deltaTime;
                 transform.position += movement;
             }
             else
             {
-                Vector3 movement = (forward * verticalInput + right * horizontalInput) * moveSpeed * Time.deltaTime;
+                Vector3 movement = (forward * smoothVertical + right * smoothHorizontal) * moveSpeed * Time.deltaTime;
                 transform.position += movement;
             }
             // Keep the camera at the fixed Y position

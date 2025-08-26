@@ -16,7 +16,7 @@ public class WPandSP : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FilePath = Path.Combine(Application.persistentDataPath, "WSPoints.txt");
+        FilePath = Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "WSPoints.txt");
         // Check if the Cash.txt file exists
         if (File.Exists(FilePath))
         {
@@ -26,8 +26,8 @@ public class WPandSP : MonoBehaviour
         {
             Wpoints = 50;
             Spoints = 50;
-            WText.text = Wpoints.ToString() + " Worker Point";
-            SText.text = Spoints.ToString() + " Science Point";
+            WText.text = Wpoints.ToString();
+            SText.text = Spoints.ToString();
             SaveToFile();
         }
     }
@@ -44,8 +44,8 @@ public class WPandSP : MonoBehaviour
         string[] data = PointsString.Split(',');
         Wpoints = Int32.Parse(data[0]);
         Spoints = Int32.Parse(data[1]);
-        WText.text = Wpoints.ToString() + " Worker Point";
-        SText.text = Spoints.ToString() + " Science Point";
+        WText.text = Wpoints.ToString();
+        SText.text = Spoints.ToString();
     }
 
     public void ChangeWPoints(int amount)

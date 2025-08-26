@@ -16,16 +16,13 @@ public class SaveFolderExplorer : MonoBehaviour
 
     void Start()
     {
-        // Add a listener to the button to call both OpenFolder and ToggleGameObject when clicked
-        openFolderButton.onClick.AddListener(OpenFolder);
-
         // Display the persistentDataPath in the TextMeshPro field
         DisplayPersistentPath();
     }
 
-    void OpenFolder()
+    public void OpenFolder()
     {
-        string path = Application.persistentDataPath;
+        string path = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir");
 
         if (Directory.Exists(path))
         {
@@ -37,7 +34,7 @@ public class SaveFolderExplorer : MonoBehaviour
     void DisplayPersistentPath()
     {
         // Display the path in the TextMeshPro field
-        string path = Application.persistentDataPath;
+        string path = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir");
         pathText.text = "Save Folder: " + path;
     }
 
@@ -53,7 +50,7 @@ public class SaveFolderExplorer : MonoBehaviour
 
     public void YesDeleteFolder()
     {
-        string path = Application.persistentDataPath;
+        string path = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir");
         if (Directory.Exists(path))
         {
             // Delete the folder and its contents
