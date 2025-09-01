@@ -6,6 +6,7 @@ public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown displayModeDropdown;
     [SerializeField] private TMP_Dropdown qualityDropdown;
+    [SerializeField] private TMP_Dropdown inputDropdown;
     private string settingsFilePath;
 
     private void Start()
@@ -24,6 +25,10 @@ public class SettingsMenu : MonoBehaviour
         displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("Borderless Fullscreen"));
         displayModeDropdown.options.Add(new TMP_Dropdown.OptionData("Maximized Window"));
 
+        inputDropdown.options.Clear();
+        inputDropdown.options.Add(new TMP_Dropdown.OptionData("Default"));
+        inputDropdown.options.Add(new TMP_Dropdown.OptionData("Keyboard Only"));
+
         qualityDropdown.options.Clear();
         string[] qualityLevels = QualitySettings.names;
         foreach (string level in qualityLevels)
@@ -33,6 +38,7 @@ public class SettingsMenu : MonoBehaviour
 
         displayModeDropdown.onValueChanged.AddListener(SetDisplayMode);
         qualityDropdown.onValueChanged.AddListener(SetGraphicsQuality);
+        inputDropdown.onValueChanged.AddListener(delegate { SaveSettings(); });
     }
 
     // Load saved settings at the start
@@ -45,6 +51,7 @@ public class SettingsMenu : MonoBehaviour
             {
                 int displayMode = int.Parse(lines[0]);
                 int qualityLevel = int.Parse(lines[1]);
+                int KeayboardOnly = int.Parse(lines[2]);
 
                 // Apply display mode setting
                 SetDisplayMode(displayMode);
@@ -54,12 +61,15 @@ public class SettingsMenu : MonoBehaviour
                 QualitySettings.SetQualityLevel(qualityLevel);
                 qualityDropdown.value = qualityLevel;
                 SetGraphicsQuality(qualityLevel);
+
+                inputDropdown.value = KeayboardOnly;
             }
         }
         else
         {
             int displayMode = 0;
             int qualityLevel = 0;
+            int KeayboardOnly = 0;
             // Apply display mode setting
             SetDisplayMode(displayMode);
             displayModeDropdown.value = displayMode;
@@ -77,12 +87,13 @@ public class SettingsMenu : MonoBehaviour
     {
         int displayMode = displayModeDropdown.value;
         int qualityLevel = qualityDropdown.value;
+        int keyboardOnly = inputDropdown.value;
 
         using (StreamWriter writer = new StreamWriter(settingsFilePath)) // 'true' enables appending
         {
-
             writer.WriteLine(displayMode.ToString());
             writer.WriteLine(qualityLevel.ToString());
+            writer.WriteLine(keyboardOnly.ToString());
         }
 
     }

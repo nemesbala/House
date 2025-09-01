@@ -58,7 +58,7 @@ public class RoadConnectionChecker : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit, checkDistance))
         {
             //Debug.Log($"Raycast hit {hit.collider.gameObject.name} in {direction} direction.");
-            if (hit.collider.CompareTag("Road"))
+            if (hit.collider.CompareTag("Road") || hit.collider.CompareTag("DisconnectedRoad"))
             {
                 return true;
             }

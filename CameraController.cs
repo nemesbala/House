@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 
 public class CameraController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class CameraController : MonoBehaviour
     public float lookSpeed = 2f;
     public PublicBoolForPauseMenuOpen publicBoolForPauseMenuOpen;
     private float currentYPosition;
-
+    public int KeyboardOnly;
     private float smoothHorizontal = 0f;
     private float smoothVertical = 0f;
     public float inputSmoothSpeed = 10f; // How quickly it ramps up/down
@@ -20,6 +21,15 @@ public class CameraController : MonoBehaviour
         // Initialize the camera's Y position
         currentYPosition = initialYPosition;
         publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
+
+        if (File.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "settings.txt")))
+        {
+            string[] lines = File.ReadAllLines(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "settings.txt"));
+            if (lines.Length >= 2)
+            {
+                KeyboardOnly = int.Parse(lines[2]);
+            }
+        }
     }
 
     void Update()
@@ -30,10 +40,19 @@ public class CameraController : MonoBehaviour
             float rawHorizontal = 0f;
             float rawVertical = 0f;
 
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) rawVertical += 1f;
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) rawVertical -= 1f;
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) rawHorizontal += 1f;
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) rawHorizontal -= 1f;
+            if(KeyboardOnly == 1)
+            {
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) rawVertical += 1f;
+                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) rawVertical -= 1f;
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) rawHorizontal += 1f;
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) rawHorizontal -= 1f;
+            }
+            else
+            {
+                // Standard Unity input (includes controllers, mouse etc.)
+                rawHorizontal = Input.GetAxisRaw("Horizontal");
+                rawVertical = Input.GetAxisRaw("Vertical");
+            }
 
             // Smoothly interpolate input over time
             smoothHorizontal = Mathf.MoveTowards(smoothHorizontal, rawHorizontal, inputSmoothSpeed * Time.deltaTime);

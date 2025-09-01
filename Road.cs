@@ -63,12 +63,14 @@ public class Road : MonoBehaviour
     public TextMeshProUGUI MEffects;
     public AudioMixer audioMixer;
     public bool CanBeClickedOn = false;
+    private RoadNetworkManager RNM;
 
     void Start()
     {
         //mainCamera = Camera.main;
         cashDisplay = FindObjectOfType<CashDisplay>();
         publicBoolForPauseMenuOpen = FindObjectOfType<PublicBoolForPauseMenuOpen>();
+        RNM = FindObjectOfType<RoadNetworkManager>();
         //Debug.Log($"Vector3: {offset}");
         // Generate a unique ID if it doesn't already exist
         if (string.IsNullOrEmpty(houseID))
@@ -155,8 +157,9 @@ public class Road : MonoBehaviour
         blueprintChecker.SubtractBlueprint(HouseArrayID);
         gameObject.layer = 0;
         roadConnectionChecker.Start();
-        MainRoadChecker.Instance.CollectBuildings();
-        MainRoadChecker.Instance.RecheckAllBuildings();
+        RNM.OnRoadNetworkChanged();
+        /*MainRoadChecker.Instance.CollectBuildings();
+        MainRoadChecker.Instance.RecheckAllBuildings();*/
         StartCoroutine(ResetPlacing());
     }
 
@@ -205,20 +208,20 @@ public class Road : MonoBehaviour
             publicBoolForPauseMenuOpen.isAnUIOpened = true;
             if (PowerGiver)
             {
-                PEffects.text = "+ " + PowerToGive01 + " Power";
+                PEffects.text = "+ " + PowerToGive01;
             }
             else if (!PowerGiver)
             {
-                PEffects.text = "- " + PowerToTake01 + " Power";
+                PEffects.text = "- " + PowerToTake01;
             }
 
             if (MoodGiver)
             {
-                MEffects.text = "+ " + MoodToGive01 + " Mood";
+                MEffects.text = "+ " + MoodToGive01;
             }
             else if (!MoodGiver)
             {
-                MEffects.text = "- " + MoodToTake01 + " Mood";
+                MEffects.text = "- " + MoodToTake01;
             }
         }
     }
@@ -253,10 +256,9 @@ public class Road : MonoBehaviour
         {
             Mood.DecreaseNegative(MoodToTake01);
         }
-
+        gameObject.tag = "Untagged";
         objectToEnable.SetActive(false);
-        MainRoadChecker.Instance.CollectBuildings();
-        MainRoadChecker.Instance.RecheckAllBuildings();
+        RNM.OnRoadNetworkChanged();
         UIClosing();
         Destroy(gameObject);
     }
