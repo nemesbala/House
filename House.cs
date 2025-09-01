@@ -1604,8 +1604,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1));
-                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "Worker Point";
+                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower * 0.5f), CashToGive1));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower * 0.5f), CashToGive1)) + "Worker Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
@@ -1623,8 +1623,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1));
-                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "Science Point";
+                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower * 0.5f), CashToGive1));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower), CashToGive1)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive1 * CurrentMood * CurrentPower), XPToGive1)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive1 * CurrentMood * CurrentPower * 0.5f), CashToGive1)) + "Science Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
@@ -1640,8 +1640,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2));
-                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "Worker Point";
+                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower * 0.5f), CashToGive2));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower * 0.5f), CashToGive2)) + "Worker Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
@@ -1659,8 +1659,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2));
-                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "Science Point";
+                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower * 0.5f), CashToGive2));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower), CashToGive2)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive2 * CurrentMood * CurrentPower), XPToGive2)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive2 * CurrentMood * CurrentPower * 0.5f), CashToGive2)) + "Science Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
@@ -1676,8 +1676,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3));
-                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "Worker Point";
+                                            wpandsp.ChangeWPoints(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower * 0.5f), CashToGive3));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower * 0.5f), CashToGive3)) + "Worker Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
@@ -1695,8 +1695,8 @@ public class House : MonoBehaviour
                                         {
                                             cashDisplay.AddCash(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3));
                                             xpManager.AddXP(Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3));
-                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3));
-                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "Science Point";
+                                            wpandsp.ChangeSPoints(Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower * 0.5f), CashToGive3));
+                                            AFTUCtxt.text = "+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower), CashToGive3)) + "$ \n+ " + (Mathf.Min(Mathf.CeilToInt(XPToGive3 * CurrentMood * CurrentPower), XPToGive3)) + "XP \n+ " + (Mathf.Min(Mathf.CeilToInt(CashToGive3 * CurrentMood * CurrentPower * 0.5f), CashToGive3)) + "Science Point";
                                             animatedFloatingTextUponCollection.SetActive(false);
                                             animatedFloatingTextUponCollection.SetActive(true);
                                             break;
