@@ -181,6 +181,7 @@ public class Road : MonoBehaviour
 
     public void CloseWindow()
     {
+        UIClosing();
         objectToEnable.SetActive(false);
     }
 

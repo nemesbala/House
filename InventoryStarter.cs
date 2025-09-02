@@ -15,6 +15,7 @@ public class InventoryStarter : MonoBehaviour
         {
             //Debug.Log("File does not exist. Initializing with 34 zeros.");
             data[0] = 10;
+            data[14] = 10;
             data[34] = 3;
 
             using (StreamWriter writer = new StreamWriter(inventoryFilePath))

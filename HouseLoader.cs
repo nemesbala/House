@@ -4,8 +4,9 @@ using UnityEngine;
 public class HouseLoader : MonoBehaviour
 {
     public BuildingSystem buildingSystem; // Reference to the BuildingSystem script
+    public RoadNetworkManager RNM;
 
-    void Start()
+    void Awake()
     {
         if (!Directory.Exists(Path.Combine(Path.Combine(Path.GetDirectoryName(Application.dataPath), "SaveDir"), "Building")))
         {
@@ -28,6 +29,7 @@ public class HouseLoader : MonoBehaviour
             //Debug.Log(file + " has the following data: " + data);
             LoadHouseFromData(data, Path.GetFileNameWithoutExtension(file));
         }
+        RNM.OnRoadNetworkChanged();
     }
 
     // Load a single house from its saved data
